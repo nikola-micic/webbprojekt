@@ -1,0 +1,117 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div style="font-family: Roboto" class="mx-4 md:mx-32 md:my-6 min-h-screen flex flex-col md:flex-row justify-between gap-16">
+  <div class="flex flex-col text-center">
+    <h1 class="text-3xl mb-4 text-gray-800 dark:text-gray-300">Most Successful Predictors</h1>
+    <table class="min-w-full divide-y divide-gray-200 table-fixed rounded-xl border-gray-300 dark:divide-gray-700">
+        <thead class="bg-gray-100 dark:bg-gray-700 border-b border-gray-800">
+            <tr>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
+                    Rank
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
+                    User
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
+                    Total Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
+                  Successful Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
+                  Predict Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          {% for user in most_successful %}
+            <tr class="hover:bg-gray-300 dark:hover:bg-gray-700">
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.username }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.total_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.successful_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.success_rate}} %</td> 
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <a href="most-successful/" class="bg-gray-600 text-gray-100 dark:text-gray-300 inline-block py-5 px-[84px] border-t border-gray-800 rounded-b-md shadow-sm dark:shadow-md shadow-gray-700 dark:shadow-gray-800 hover:border hover:border-gray-700 dark:hover:border-gray-500 font-semibold">Full Table</a>
+  </div>
+
+  <div class="flex flex-col text-center">
+    <h1 class="text-3xl mb-4 text-gray-800 dark:text-gray-300">Highest Predict Rate</h1>
+    <table class="min-w-full divide-y divide-gray-200 table-fixed rounded-xl border-gray-300 dark:divide-gray-700">
+        <thead class="bg-gray-100 dark:bg-gray-700 border-b border-gray-800">
+            <tr>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-600 uppercase dark:text-gray-300">
+                    Rank
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-600 uppercase dark:text-gray-300">
+                    User
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-600 uppercase dark:text-gray-300">
+                    Total Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-600 uppercase dark:text-gray-300">
+                  Successful Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-600 uppercase dark:text-gray-300">
+                  Predict Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          {% for user in highest_rate %}
+            <tr class="hover:bg-gray-300 dark:hover:bg-gray-700">
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.username }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.total_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.successful_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.success_rate }} %</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <a href="highest-rate/" class="bg-gray-600 text-gray-100 dark:text-gray-300 inline-block py-5 px-[84px] border-t border-gray-800 rounded-b-md shadow-sm dark:shadow-md shadow-gray-700 dark:shadow-gray-800 hover:border hover:border-gray-700 dark:hover:border-gray-500 font-semibold">Full Table</a>
+  </div>
+
+  <div class="flex flex-col text-center">
+    <h1 class="text-3xl mb-4 text-gray-800 dark:text-gray-300">Most Picks</h1>
+    <table class="min-w-full divide-y divide-gray-200 table-fixed rounded-xl border-gray-300 dark:divide-gray-700">
+        <thead class="bg-gray-100 dark:bg-gray-700 border-b border-gray-800">
+            <tr>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                    Rank
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                    User
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                    Succes Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                  Successful Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                  Predict Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          {% for user in most_picks %}
+            <tr class="hover:bg-gray-300 dark:hover:bg-gray-700">
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.username }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.total_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.successful_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.success_rate }} %</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <a href="most-picks/" class="bg-gray-600 text-gray-100 dark:text-gray-300 inline-block py-5 px-[84px] border-t border-gray-800 rounded-b-md shadow-sm dark:shadow-md shadow-gray-700 dark:shadow-gray-800 hover:border hover:border-gray-700 dark:hover:border-gray-500 font-semibold">Full Table</a>
+  </div>
+</div>
+
+{% endblock content%}

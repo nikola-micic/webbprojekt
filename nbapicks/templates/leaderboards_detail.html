@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div style="font-family: Roboto" class="mx-4 md:mx-32 md:my-6 min-h-screen">
+  <div class="flex flex-col text-center">
+    <h1 class="text-3xl mb-6 text-gray-800 dark:text-gray-300">{{ title }}</h1>
+    <table class="min-w-full divide-y divide-gray-200 table-fixed rounded-xl border-gray-300 dark:divide-gray-700">
+        <thead class="bg-gray-100 dark:bg-gray-700 border-b border-gray-800">
+            <tr>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-300">
+                    Rank
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-300">
+                    User
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-300">
+                    Total Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-300">
+                  Successful Picks
+                </th>
+                <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-center text-gray-700 uppercase dark:text-gray-300">
+                  Predict Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          {% for user in page_obj %}
+            <tr class="hover:bg-gray-300 dark:hover:bg-gray-700">
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.username }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.total_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.successful_picks }}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-white">{{ user.success_rate}} %</td> 
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <div class="flex-1 pagination border-t border-gray-800 text-md text-gray-300 font-semibold text-center bg-gray-700 rounded-b-md py-4">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+  </div>
+</div>
+{% endblock content %}

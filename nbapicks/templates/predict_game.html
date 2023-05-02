@@ -1,0 +1,33 @@
+<!-- NOT USED ATM kept for possible future use -->
+
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div style="font-family: Roboto" class="mx-4 md:mx-32 md:my-6 min-h-screen text-gray-300">
+    <h1 class="text-3xl flex-1 mb-2">Who's got it?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="border-gray-400 hover:border-gray-700 dark:border-gray-700 border py-4 px-4 dark:hover:border-gray-500 rounded-md flex flex-row justify-between items-center">
+            <label class="flex flex-row justify-between flex-1">
+                <input class="peer hidden" type="radio" name="team_picked" value="{{ game.home_team }}">
+                <div class="hover:cursor-pointer peer-checked:rounded-md peer-checked:border peer-checked:py-3 peer-checked:border-green-600 flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ game.home_team.logo.url }}">{{ game.home_team.name }}</div>
+            </label>
+            <div class="flex flex-col items-center text-center justify-center flex-1">
+                <p>VS</p><p class="text-sm font-light">{{ game.date }}</p><input type="submit" name="submit" value="Submit" class="mt-2 hover:cursor-pointer bg-gray-600 text-gray-100 dark:text-gray-300 inline-block py-2 px-[74px] rounded-md shadow-sm dark:shadow-md shadow-gray-700 dark:shadow-gray-800 dark:border-0 hover:border hover:border-gray-700 dark:hover:border-gray-500 font-semibold">
+            </div>
+            <label class="flex flex-row justify-between flex-1">
+                <input class="peer hidden" type="radio" name="team_picked" value="{{ game.away_team }}">
+                <div class="hover:cursor-pointer peer-checked:rounded-md peer-checked:border peer-checked:py-3 peer-checked:border-green-600 flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ game.away_team.logo.url }}">{{ game.away_team.name }}</div>
+            </label>
+        </div>
+        {% if form.errors %}
+            <div class="mb-6 flex-1 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline">{{ form.errors }}</span>
+            </div>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock content %} 

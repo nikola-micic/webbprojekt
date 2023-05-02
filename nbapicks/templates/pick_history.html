@@ -1,0 +1,62 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div style="font-family: Roboto" class="mx-4 md:mx-32 md:my-6 min-h-screen flex flex-col text-gray-600 dark:text-gray-300">
+    <div class="flex flex-col text-gray-600 dark:text-gray-300 text-center gap-6 justify-center w-full mb-6">
+        <h1 class="text-3xl mb-2">Pick History</h1>
+        {% for pick in page_obj %}
+        {% if pick.team_picked == pick.game.home_team and pick.successful_pick is True %}
+        <div class="border-gray-400 hover:border-gray-700 dark:border-gray-700 border py-4 px-4 dark:hover:border-gray-500 rounded-xl flex flex-row justify-between items-center">
+            <div class="rounded-xl py-2 border border-green-600 flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.home_team.logo.url }}">{{ pick.game.home_team.name }}</div>
+            <div class="flex flex-col items-center justify-start flex-1">
+                <p class="text-xl">{{ pick.game.home_team_score }} : {{ pick.game.away_team_score }}</p><p class="text-sm font-light">{{ pick.game.date }}</p>
+            </div>
+            <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.away_team.logo.url }}">{{ pick.game.away_team.name }}</div>
+        </div>
+        {% elif pick.team_picked == pick.game.home_team and pick.successful_pick is False %}
+        <div class="border-gray-400 hover:border-gray-700 dark:border-gray-700 border py-4 px-4 dark:hover:border-gray-500 rounded-xl flex flex-row justify-between items-center">
+            <div class="rounded-xl py-2 border border-red-600 flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.home_team.logo.url }}">{{ pick.game.home_team.name }}</div>
+            <div class="flex flex-col items-center justify-start flex-1">
+                <p class="text-xl">{{ pick.game.home_team_score }} : {{ pick.game.away_team_score }}</p><p class="text-sm font-light">{{ pick.game.date }}</p>
+            </div>
+            <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.away_team.logo.url }}">{{ pick.game.away_team.name }}</div>
+        </div>
+        {% elif pick.team_picked == pick.game.away_team and pick.successful_pick is True %}
+        <div class="border-gray-400 hover:border-gray-700 dark:border-gray-700 border py-4 px-4 dark:hover:border-gray-500 rounded-xl flex flex-row justify-between items-center">
+            <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.home_team.logo.url }}">{{ pick.game.home_team.name }}</div>
+            <div class="flex flex-col items-center justify-start flex-1">
+                <p class="text-xl">{{ pick.game.home_team_score }} : {{ pick.game.away_team_score }}</p><p class="text-sm font-light">{{ pick.game.date }}</p>
+            </div>
+            <div class="rounded-xl py-2 border border-green-600 flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.away_team.logo.url }}">{{ pick.game.away_team.name }}</div>
+        </div>
+        {% elif pick.team_picked == pick.game.away_team and pick.successful_pick is False %}
+        <div class="border-gray-400 hover:border-gray-700 dark:border-gray-700 border py-4 px-4 dark:hover:border-gray-500 rounded-xl flex flex-row justify-between items-center">
+            <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.home_team.logo.url }}">{{ pick.game.home_team.name }}</div>
+            <div class="flex flex-col items-center justify-start flex-1">
+                <p class="text-xl">{{ pick.game.home_team_score }} : {{ pick.game.away_team_score }}</p><p class="text-sm font-light">{{ pick.game.date }}</p>
+            </div>
+            <div class="rounded-xl py-2 border border-red-600 flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ pick.game.away_team.logo.url }}">{{ pick.game.away_team.name }}</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="pagination text-xl">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}

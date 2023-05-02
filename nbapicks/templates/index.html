@@ -1,0 +1,119 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Arvo&family=Roboto&display=swap');
+  </style> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <title>NBA Picks</title>
+</head>
+
+<body style="font-family: Roboto" class="bg-gray-200 dark:bg-gray-900">
+
+<!-- NAVBAR -->
+<nav class="bg-white dark:bg-gray-800 shadow-md dark:shadow-sm dark:shadow-gray-800">
+    <div class="mx-4 md:mx-32">
+        <div class="flex flex-col md:flex-row justify-between items-center py-4">
+            <a href="/">
+                <img class="hidden dark:block" src="{% static '/nbapicksdark.png' %}">
+                <img class="block dark:hidden" src="{% static '/nbapickslight.png' %}">
+            </a>
+            <ul class="flex gap-2 md:gap-4 md:font-semibold mb-2 md:mb-0">
+                <li><a href="/"
+                        class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">Home</a>
+                </li>
+                <li><a href="/predictions"
+                        class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">Predictions</a>
+                </li>
+                <li><a href="/leaderboards"
+                        class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">Leaderboards</a></li>
+                <li><a href="/teams"
+                        class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">Teams</a></li>
+                <li><a href="/contact"
+                        class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">Contact</a></li>
+            </ul>
+            {% if user.is_authenticated %}
+            <a href="/logout" class="font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">Sign Out</a>
+            {% else %}
+            <a href="/login" class="font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">Sign In</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+{% block content %}
+<div class="min-h-screen flex flex-col mx-4 md:mx-32 my-8 text-lg text-gray-600 dark:text-gray-300">
+    <div class="flex flex-col md:flex-row justify-evenly mb-10 gap-16 md:gap-32">
+        <div class="flex flex-col gap-4 text-gray-600 dark:text-gray-300 text-sm font-semibold justify-start w-full">
+            <h1 class="text-4xl justify-end">Results</h1>
+            {% for game in past_games %}
+            <div class="border-gray-400 hover:border-gray-700 dark:border-gray-700 border py-4 px-4 dark:hover:border-gray-500 rounded-xl flex flex-row justify-between items-center">
+                <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ game.home_team.logo }}">{{ game.home_team.name }}</div>
+                <div class="flex flex-col items-center justify-start flex-1"><p class="text-xl">{{ game.home_team_score }} : {{ game.away_team_score }}</p><p class="text-sm font-light">{{ game.date }}</p></div>
+                <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ game.away_team.logo }}">{{ game.away_team.name }}</div>
+            </div>
+            {% endfor %}
+            {% if past_games.count < upcoming_games.count %}
+            <div class="mt-6 hidden md:block">
+                <h1 class="text-4xl font-semibold pb-4">Welcome to NBA Picks!</h1>
+                <p class="mb-4 font-normal">NBA Picks is the place for ultimate NBA prediction that lets you put your basketball knowledge to the test! Get ready to showcase your skills as you compete with thousands of users from around the world in predicting the outcomes of NBA matches and earn points along the way.</p>
+                <p class="mb-4 font-normal">With NBA Picks, you'll experience the thrill of being a virtual sports analyst, as you make your predictions for upcoming NBA games. Will your favorite team come out on top? Can the underdogs pull off an upset? It's time to prove your basketball IQ and make your mark in the global leaderboard.</p>
+                <p class="font-normal">What sets NBA Picks apart is its vibrant community of basketball fans from all over the world. Connect with fellow users, engage in friendly competitions, and discuss your predictions. You can even create your own private leagues to compete against friends and family, adding an extra layer of excitement to the NBA season. So, whether you're a die-hard basketball fan, a casual observer, or just someone who loves a good prediction challenge, you came to the right place. Join thousands of users worldwide and let the games begin!</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="flex flex-col gap-4 text-gray-600 dark:text-gray-300 text-sm font-semibold justify-start w-full">
+            <h1 class="text-4xl justify-start">Coming up</h1>
+            {% for game in upcoming_games %}
+            <div class="border-gray-400 hover:border-gray-700 dark:border-gray-700 border py-4 px-4 dark:hover:border-gray-500 rounded-xl flex flex-row justify-between items-center">
+                <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ game.home_team.logo }}">{{ game.home_team.name }}</div>
+                <div class="flex flex-col items-center justify-start flex-1"><p>VS</p><p class="text-sm font-light">{{ game.date }}</p></div>
+                <div class="flex flex-col items-center justify-start flex-1"><img class="h-[50px] w-[50px]" src="{{ game.away_team.logo }}">{{ game.away_team.name }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if past_games.count < upcoming_games.count %}
+            <div class="mt-6 block md:hidden">
+                <h1 class="text-4xl font-semibold pb-4">Welcome to NBA Picks!</h1>
+                <p class="mb-4 font-normal">NBA Picks is the place for ultimate NBA prediction that lets you put your basketball knowledge to the test! Get ready to showcase your skills as you compete with thousands of users from around the world in predicting the outcomes of NBA matches and earn points along the way.</p>
+                <p class="mb-4 font-normal">With NBA Picks, you'll experience the thrill of being a virtual sports analyst, as you make your predictions for upcoming NBA games. Will your favorite team come out on top? Can the underdogs pull off an upset? It's time to prove your basketball IQ and make your mark in the global leaderboard.</p>
+                <p class="font-normal">What sets NBA Picks apart is its vibrant community of basketball fans from all over the world. Connect with fellow users, engage in friendly competitions, and discuss your predictions. You can even create your own private leagues to compete against friends and family, adding an extra layer of excitement to the NBA season. So, whether you're a die-hard basketball fan, a casual observer, or just someone who loves a good prediction challenge, you came to the right place. Join thousands of users worldwide and let the games begin!</p>
+            </div>
+        {% endif %}
+    </div>
+    {% if past_games.count == upcoming_games.count or past_games.count > upcoming_games.count %}
+    <div class="md:col-span-2 md:row-span-1">
+        <h1 class="text-4xl font-semibold pb-6">Welcome to NBA Picks!</h1>
+        <p class="mb-6">NBA Picks is the place for ultimate NBA prediction that lets you put your basketball knowledge to the test! Get ready to showcase your skills as you compete with thousands of users from around the world in predicting the outcomes of NBA matches and earn points along the way.</p>
+        <p class="mb-6">With NBA Picks, you'll experience the thrill of being a virtual sports analyst, as you make your predictions for upcoming NBA games. Will your favorite team come out on top? Can the underdogs pull off an upset? It's time to prove your basketball IQ and make your mark in the global leaderboard.</p>
+        <p>What sets NBA Picks apart is its vibrant community of basketball fans from all over the world. Connect with fellow users, engage in friendly competitions, and discuss your predictions. You can even create your own private leagues to compete against friends and family, adding an extra layer of excitement to the NBA season. So, whether you're a die-hard basketball fan, a casual observer, or just someone who loves a good prediction challenge, you came to the right place. Join thousands of users worldwide and let the games begin!</p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock content %}
+
+<!-- FOOTER -->
+<footer class="bg-white dark:bg-gray-800 shadow-md dark:text-gray-300 py-6 font-semibold text-gray-600">
+    <div class="mx-4 md:mx-32 px-4">
+        <div class="flex flex-col justify-center items-center gap-2">
+            <ul class="flex flex-row text-center gap-6">
+                <li>
+                    <a href="/contact"><svg class="dark:bg-gray-800 w-12 h-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.233 5.488c-.843-.038-1.097-.046-3.233-.046s-2.389.008-3.232.046c-2.17.099-3.181 1.127-3.279 3.279-.039.844-.048 1.097-.048 3.233s.009 2.389.047 3.233c.099 2.148 1.106 3.18 3.279 3.279.843.038 1.097.047 3.233.047 2.137 0 2.39-.008 3.233-.046 2.17-.099 3.18-1.129 3.279-3.279.038-.844.046-1.097.046-3.233s-.008-2.389-.046-3.232c-.099-2.153-1.111-3.182-3.279-3.281zm-3.233 10.62c-2.269 0-4.108-1.839-4.108-4.108 0-2.269 1.84-4.108 4.108-4.108s4.108 1.839 4.108 4.108c0 2.269-1.839 4.108-4.108 4.108zm4.271-7.418c-.53 0-.96-.43-.96-.96s.43-.96.96-.96.96.43.96.96-.43.96-.96.96zm-1.604 3.31c0 1.473-1.194 2.667-2.667 2.667s-2.667-1.194-2.667-2.667c0-1.473 1.194-2.667 2.667-2.667s2.667 1.194 2.667 2.667zm4.333-12h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm.952 15.298c-.132 2.909-1.751 4.521-4.653 4.654-.854.039-1.126.048-3.299.048s-2.444-.009-3.298-.048c-2.908-.133-4.52-1.748-4.654-4.654-.039-.853-.048-1.125-.048-3.298 0-2.172.009-2.445.048-3.298.134-2.908 1.748-4.521 4.654-4.653.854-.04 1.125-.049 3.298-.049s2.445.009 3.299.048c2.908.133 4.523 1.751 4.653 4.653.039.854.048 1.127.048 3.299 0 2.173-.009 2.445-.048 3.298z"/></svg></a>
+                </li>
+                <li>
+                    <a href="mailto: nbapicks@mail.com"><svg class="dark:bg-gray-800 rounded-md" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="48" height="48" viewBox="2 2 20 20"><path d="M12 12.713l-11.985-9.713h23.971l-11.986 9.713zm-5.425-1.822l-6.575-5.329v12.501l6.575-7.172zm10.85 0l6.575 7.172v-12.501l-6.575 5.329zm-1.557 1.261l-3.868 3.135-3.868-3.135-8.11 8.848h23.956l-8.11-8.848z"/></svg></a>
+                </li>
+                <li>
+                    <a href="/contact"><svg  class="dark:bg-gray-800 w-12 h-12" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                </li>
+                
+            </ul>
+            <p class="text-center">© 2023 NBA Picks. All rights reserved
+</body>
+</html>
